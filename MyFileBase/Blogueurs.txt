@@ -1,0 +1,3 @@
+id|nom|email|type|pass|
+1|asmae|asmae@gmail|AUTEUR|asm
+2|meryem|meryem@gmail|AUTEUR|mia

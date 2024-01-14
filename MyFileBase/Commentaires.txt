@@ -1,0 +1,11 @@
+id|contenu|idauteur|
+1|Very Impressive !!|1
+2|Good Job|1
+3|I Don't Agree|2
+4|Love the idea|2
+5|Interesting Perspective|2
+6|Well Explained|1
+7|Disagree with Some Points|2
+8|Great Insights|1
+
+
