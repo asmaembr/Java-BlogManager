@@ -1,5 +1,6 @@
 package Mvc.Vue.Panels.CommentPanels;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Frames.CommentFormView;
 import Mvc.Vue.utils.jtableUtils.JTableUtilities;
 import Mvc.Vue.utils.jtableUtils.MyTablesModel;
@@ -49,7 +50,11 @@ public class TableCommentPanel extends JPanel {
 
             if (result == JOptionPane.YES_OPTION) {
                 dao.deleteById(id);
-                tablesModel.initCommentaireData(dao.findAll());
+                tablesModel.initCommentaireData(dao
+                        .findAll()
+                        .stream()
+                        .filter(c->c.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                        .collect(Collectors.toList()));
                 tablesModel.fireTableDataChanged();
                 JOptionPane.showMessageDialog(null, "Commentaire n°"+id+" successfully removed", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
 
@@ -77,10 +82,18 @@ public class TableCommentPanel extends JPanel {
        String text =  crudPanel.getTxt_search().getText();
          if(text.trim().length()==0)
          {
-             tablesModel.initCommentaireData(dao.findAll());
+             tablesModel.initCommentaireData(dao
+                     .findAll()
+                     .stream()
+                     .filter(c->c.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                     .collect(Collectors.toList()));
          }
          else {
-             List<Commentaire> commentaires = dao.findAll();
+             List<Commentaire> commentaires = dao
+                     .findAll()
+                     .stream()
+                     .filter(c->c.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                     .collect(Collectors.toList());
              var newList =
                      commentaires.stream()
                              .filter(commentaire -> {
@@ -106,7 +119,11 @@ public class TableCommentPanel extends JPanel {
 
         tablesModel = new MyTablesModel();
         tablesModel.initColumns("ID", "Contenu");
-        tablesModel.initCommentaireData(new CommentaireDAO().findAll());
+        tablesModel.initCommentaireData(new CommentaireDAO()
+                .findAll()
+                .stream()
+                .filter(c->c.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                .toList());
 
         table = new JTable(tablesModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -149,7 +166,11 @@ public class TableCommentPanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {}
             @Override
             public void removeUpdate(DocumentEvent e) {
-                tablesModel.initCommentaireData(dao.findAll());
+                tablesModel.initCommentaireData(dao.findAll()
+                        .stream()
+                        .filter(c->c.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                        .toList()
+                );
                 tablesModel.fireTableDataChanged();
                 insertUpdate(e);}
             @Override

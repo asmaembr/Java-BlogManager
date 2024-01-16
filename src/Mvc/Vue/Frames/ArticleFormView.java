@@ -1,5 +1,6 @@
 package Mvc.Vue.Frames;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Panels.ArticleDashboardPanels.ArticleFormPanel;
 import Mvc.Vue.Panels.ArticleDashboardPanels.TableArticlePanel;
 import Mvc.Vue.Panels.ConfimButtonsPanel;
@@ -60,7 +61,10 @@ public class ArticleFormView extends JFrame {
                 if (action.equals(Action.Save)) {
                     article = dao.save(article);
                     JOptionPane.showMessageDialog(this, "Article n°" + article.getId() + " successfully added", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
-                    tablePanel.getTablesModel().initArticleData(dao.findAll());
+                    tablePanel.getTablesModel().initArticleData(dao.findAll()
+                            .stream()
+                            .filter(a->a.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                            .toList());
                     tablePanel.getTablesModel().fireTableDataChanged();
                     dispose();
                 }
@@ -68,7 +72,10 @@ public class ArticleFormView extends JFrame {
                     boolean updated = dao.update(article);
                     if (updated) {
                         JOptionPane.showMessageDialog(this, "Article n°" + article.getId() + " successfully updated", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
-                        tablePanel.getTablesModel().initArticleData(dao.findAll());
+                        tablePanel.getTablesModel().initArticleData(dao.findAll()
+                                .stream()
+                                .filter(a->a.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                                .toList());
                         tablePanel.getTablesModel().fireTableDataChanged();
                         dispose();
                     } else

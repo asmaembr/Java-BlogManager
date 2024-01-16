@@ -1,5 +1,6 @@
 package Mvc.Vue.Panels.ArticleDashboardPanels;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Panels.BannerPanel;
 import Mvc.Vue.utils.CustomComboBoxRenderer;
 import Mvc.Vue.utils.hintTextFields.HintPasswordField;
@@ -9,6 +10,7 @@ import Mvc.Vue.utils.imagesUtils.Utils;
 import Mvc.Vue.utils.themes.Template;
 import Mvc.Vue.utils.themes.Theme;
 import models.Article;
+import models.Blogueur;
 import models.StatutArticle;
 
 import javax.swing.*;
@@ -97,7 +99,7 @@ public class ArticleFormPanel extends JPanel {
         var statut        = ((articleStatut    == null  ? null :
                 (articleStatut.equals(StatutArticle.PRIVE.toString()) ? StatutArticle.PRIVE :StatutArticle.PUBLIC)));
 
-        return new Article(id, statut,contenu,null,titre);
+        return new Article(id, statut,contenu,Session.getInstance().getBlogueur(), titre);
     }
     public void fillForm(Article articlevalues){
         txt_id.setText(articlevalues.getId().toString());

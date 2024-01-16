@@ -1,6 +1,7 @@
 package Mvc.Vue.Frames;
 
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Panels.BlogDashboardPanels.BlogFormPanel;
 import Mvc.Vue.Panels.BlogDashboardPanels.TableBlogPanel;
 
@@ -63,7 +64,10 @@ public class BlogFormView extends JFrame {
                 if (action.equals(Action.Save)) {
                     blog = dao.save(blog);
                     JOptionPane.showMessageDialog(this, "Blog n°" + blog.getId().toString() + " successfully added", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
-                    tablePanel.getTablesModel().initBlogData(dao.findAll());
+                    tablePanel.getTablesModel().initBlogData(
+                            dao.findAll().stream()
+                                    .filter(b->b.getProprietaire().getId().equals(Session.getInstance().getBlogueur().getId()))
+                                    .toList());
                     tablePanel.getTablesModel().fireTableDataChanged();
                     dispose();
                 }
@@ -71,7 +75,12 @@ public class BlogFormView extends JFrame {
                     boolean updated = dao.update(blog);
                     if (updated) {
                         JOptionPane.showMessageDialog(this, "Blog n°" + blog.getId() + " successfully updated", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
-                        tablePanel.getTablesModel().initBlogData(dao.findAll());
+                        tablePanel.getTablesModel().initBlogData(
+                                dao.findAll()
+                                        .stream()
+                                        .filter(b->b.getProprietaire().getId().equals(Session.getInstance().getBlogueur().getId()))
+                                        .toList()
+                        );
                         tablePanel.getTablesModel().fireTableDataChanged();
                         dispose();
                     } else

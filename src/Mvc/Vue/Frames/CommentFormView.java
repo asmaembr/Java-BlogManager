@@ -1,5 +1,6 @@
 package Mvc.Vue.Frames;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Panels.CommentPanels.CommentFormPanel;
 import Mvc.Vue.Panels.CommentPanels.TableCommentPanel;
 import Mvc.Vue.Panels.ConfimButtonsPanel;
@@ -60,7 +61,10 @@ public class CommentFormView extends JFrame {
                 if (action.equals(Action.Save)) {
                     commentaire = dao.save(commentaire);
                     JOptionPane.showMessageDialog(this, "commentaire n°" + commentaire.getId() + " successfully added", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
-                    tablePanel.getTablesModel().initCommentaireData(dao.findAll());
+                    tablePanel.getTablesModel().initCommentaireData(dao.findAll()
+                            .stream()
+                            .filter(c->c.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                            .toList());
                     tablePanel.getTablesModel().fireTableDataChanged();
                     dispose();
                 }
@@ -68,7 +72,10 @@ public class CommentFormView extends JFrame {
                     boolean updated = dao.update(commentaire);
                     if (updated) {
                         JOptionPane.showMessageDialog(this, "commentaire n°" + commentaire.getId() + " successfully updated", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
-                        tablePanel.getTablesModel().initCommentaireData(dao.findAll());
+                        tablePanel.getTablesModel().initCommentaireData(dao.findAll()
+                                .stream()
+                                .filter(c->c.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                                .toList());
                         tablePanel.getTablesModel().fireTableDataChanged();
                         dispose();
                     } else

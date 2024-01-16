@@ -1,5 +1,6 @@
 package Mvc.Vue.Panels.CommentPanels;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Panels.BannerPanel;
 import Mvc.Vue.utils.CustomComboBoxRenderer;
 import Mvc.Vue.utils.hintTextFields.HintPasswordField;
@@ -70,7 +71,7 @@ public class CommentFormPanel extends JPanel {
         var id          = ((commentaireId      == null  ? null :commentaireId));
         var contenu       = ((commentaireContenu   == null  ? null :commentaireContenu));
 
-        return new Commentaire(null,id,contenu);
+        return new Commentaire(Session.getInstance().getBlogueur(), id,contenu);
     }
     public void fillCommentaire(Commentaire commentaire){
         txt_id.setText(commentaire.getId().toString());

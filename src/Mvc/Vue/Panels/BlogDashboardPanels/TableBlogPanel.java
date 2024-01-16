@@ -1,5 +1,6 @@
 package Mvc.Vue.Panels.BlogDashboardPanels;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Frames.BlogFormView;
 import Mvc.Vue.utils.jtableUtils.JTableUtilities;
 
@@ -33,7 +34,6 @@ public class TableBlogPanel extends JPanel {
     private Color panelColor = new Color(238, 235, 235),
             textColor = new Color(62, 144, 62);
     private Font buttonsFont = new Font("Optima", Font.BOLD, 19);
-
      void deleteAction(ActionEvent e){
         int selectedLine = table.getSelectedRow();
         if(selectedLine >= 0) {
@@ -49,7 +49,10 @@ public class TableBlogPanel extends JPanel {
 
             if (result == JOptionPane.YES_OPTION) {
                 dao.deleteById(id);
-                tablesModel.initBlogData(dao.findAll());
+                tablesModel.initBlogData(dao.findAll()
+                        .stream()
+                        .filter(b->b.getProprietaire().getId().equals(Session.getInstance().getBlogueur().getId()))
+                        .collect(Collectors.toList()));
                 tablesModel.fireTableDataChanged();
                 JOptionPane.showMessageDialog(null, "Blog n°"+id+" successfully removed", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
 
@@ -77,10 +80,17 @@ public class TableBlogPanel extends JPanel {
        String text =  crudPanel.getTxt_search().getText();
          if(text.trim().length()==0)
          {
-             tablesModel.initBlogData(dao.findAll());
+             tablesModel.initBlogData(dao.findAll()
+                     .stream()
+                     .filter(b -> b.getProprietaire().getId().equals(Session.getInstance().getBlogueur().getId()))
+                     .toList()
+             );
          }
          else {
-             List<Blog> blogs = dao.findAll();
+             List<Blog> blogs = dao.findAll()
+                     .stream()
+                     .filter(b -> b.getProprietaire().getId().equals(Session.getInstance().getBlogueur().getId()))
+                     .toList();
              var newList =
                      blogs.stream()
                              .filter(blog -> {
@@ -88,7 +98,7 @@ public class TableBlogPanel extends JPanel {
                                          blog.getId().toString().equals(text)  ||
                                                  blog.getTitre().equals(text) ;
                              })
-                             .collect(Collectors.toList());
+                             .toList();
 
              tablesModel.initBlogData(newList);
          }
@@ -106,8 +116,11 @@ public class TableBlogPanel extends JPanel {
 
         tablesModel = new MyTablesModel();
         tablesModel.initColumns("ID", "Titre","Auteur");
-        tablesModel.initBlogData(new BlogDAO().findAll());
-
+        tablesModel.initBlogData(new BlogDAO()
+                .findAll()
+                        .stream()
+                        .filter(b -> b.getProprietaire().getId().equals(Session.getInstance().getBlogueur().getId()))
+                .toList());
         table = new JTable(tablesModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setForeground(new Color(105, 59, 105));
@@ -149,7 +162,11 @@ public class TableBlogPanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {}
             @Override
             public void removeUpdate(DocumentEvent e) {
-                tablesModel.initBlogData(dao.findAll());
+                tablesModel.initBlogData(dao.findAll()
+                        .stream()
+                        .filter(b->b.getProprietaire().getId().equals(Session.getInstance().getBlogueur().getId()))
+                        .collect(Collectors.toList())
+                );
                 tablesModel.fireTableDataChanged();
                 insertUpdate(e);}
             @Override

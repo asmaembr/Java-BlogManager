@@ -46,7 +46,7 @@ public class ArticleDAO implements IDao<Article,Integer>{
                 + (article.getTitre()) + "|"
                 + (article.getStatut())  + "|"
                 + (article.getContenu())+ "|"
-                + (article.getAuteur()  == null ? "null" : article.getAuteur().getId() )  + "\n";
+                + (article.getAuteur()  == null ? "null" : article.getAuteur().getId())+ "\n";
     }
     @Override
     public List<Article> findAll() {

@@ -1,5 +1,6 @@
 package Mvc.Vue.Panels.BlogDashboardPanels;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Panels.BannerPanel;
 import Mvc.Vue.utils.hintTextFields.HintTextField;
 import Mvc.Vue.utils.hintTextFields.NumericField;
@@ -61,7 +62,7 @@ public class BlogFormPanel extends JPanel {
                             !txt_titre.getText().equals(hintTitre) ?    txt_titre.getText() : null ;
         var id          = ((blogId      == null  ? null :blogId));
         var titre       = ((blogtitre   == null  ? null :blogtitre));
-        return new Blog(id,titre,null);
+        return new Blog(id,titre, Session.getInstance().getBlogueur());
     }
     public void fillForm(Blog value){
         txt_id.setText(value.getId().toString());

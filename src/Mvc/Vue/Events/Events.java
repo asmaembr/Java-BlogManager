@@ -9,14 +9,14 @@ import java.awt.event.ActionEvent;
 
 public class Events {
     public JFrame source;
-
-
+    public Session session ;
     public void login (ActionEvent e,String emailo,String mdp){
         SwingUtilities.invokeLater(() -> {
             Blogueur blo = new BlogueurDAO().findByLoginAndPass(emailo,mdp);
             if(blo==null)
             {JOptionPane.showMessageDialog(null, "Donnez des infos valides");}
             else {
+                session= Session.getInstance(blo);
                 source.dispose();
                 new BlogDashboardView();
             }

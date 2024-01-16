@@ -1,5 +1,6 @@
 package Mvc.Vue.Panels.ArticleDashboardPanels;
 
+import Mvc.Vue.Events.Session;
 import Mvc.Vue.Frames.ArticleFormView;
 import Mvc.Vue.utils.jtableUtils.JTableUtilities;
 import Mvc.Vue.utils.jtableUtils.MyTablesModel;
@@ -49,7 +50,12 @@ public class TableArticlePanel extends JPanel {
 
             if (result == JOptionPane.YES_OPTION) {
                 dao.deleteById(id);
-                tablesModel.initArticleData(dao.findAll());
+                tablesModel.initArticleData(
+                        dao.findAll()
+                        .stream()
+                        .filter(a->a.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                        .collect(Collectors.toList())
+                );
                 tablesModel.fireTableDataChanged();
                 JOptionPane.showMessageDialog(null, "Article n°"+id+" successfully removed", "Info", JOptionPane.INFORMATION_MESSAGE, Theme.icon_info);
 
@@ -75,14 +81,21 @@ public class TableArticlePanel extends JPanel {
 
      }
      void searchAction(ActionEvent e){
-
        String text =  crudPanel.getTxt_search().getText();
          if(text.trim().length()==0)
          {
-             tablesModel.initArticleData(dao.findAll());
+             tablesModel.initArticleData(
+                     dao.findAll()
+                     .stream()
+                     .filter(a->a.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                     .collect(Collectors.toList()));
          }
          else {
-             List<Article> articles = dao.findAll();
+             List<Article> articles = dao
+                     .findAll()
+                     .stream()
+                     .filter(a->a.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                     .collect(Collectors.toList());
              var newList =
                      articles.stream()
                              .filter(article -> {
@@ -111,7 +124,11 @@ public class TableArticlePanel extends JPanel {
 
         tablesModel = new MyTablesModel();
         tablesModel.initColumns("ID", "Titre", "Contenu", "Statut","Nom Auteur");
-        tablesModel.initArticleData(new ArticleDAO().findAll());
+        tablesModel.initArticleData(new ArticleDAO()
+                .findAll()
+                .stream()
+                .filter(a->a.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                .collect(Collectors.toList()));
 
         table = new JTable(tablesModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -154,7 +171,12 @@ public class TableArticlePanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {}
             @Override
             public void removeUpdate(DocumentEvent e) {
-                tablesModel.initArticleData(dao.findAll());
+                tablesModel.initArticleData(
+                        dao.findAll()
+                        .stream()
+                        .filter(a->a.getAuteur().getId().equals(Session.getInstance().getBlogueur().getId()))
+                        .collect(Collectors.toList())
+                );
                 tablesModel.fireTableDataChanged();
                 insertUpdate(e);}
             @Override

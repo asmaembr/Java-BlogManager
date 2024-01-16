@@ -2,11 +2,11 @@ id|titre|proprietaire|
 1|Programming|2
 2|How To Become Rich|2
 3|How To Avoid Bad Energy|1
-4|Learning Academy|1
+4|LA Academy|1
 5|Gym Achievements|1
 6|Flutter Programming|2
 7|Flutter|1
-8|JAVA|1
+8|Java|1
 9|Healthy Recipes|2
 10|Travel Tips|1
 11|Digital Marketing Strategies|1
@@ -18,5 +18,4 @@ id|titre|proprietaire|
 17|Fitness and Wellness Tips|1
 18|Financial Planning Insights|2
 19|Photography Techniques|2
-
 
